@@ -95,7 +95,7 @@ class ParameterItemCard extends StatelessWidget {
               onPressed: () => _showEditSheet(context),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [SizedBox(width: 8), Text("Edit")],
+                children: [SizedBox(width: 8), Text("Input")],
               ),
             ),
           ),
