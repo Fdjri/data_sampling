@@ -31,6 +31,40 @@ class _DetailSamplingPageState extends State<DetailSamplingPage> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
 
+  // List Data Alat
+  final List<Map<String, String>> _toolList = [
+    {
+      "name": "pH Meter Handheld",
+      "itemCode": "1.02.03.04.005",
+      "toolCode": "PH-M-01",
+    },
+    {
+      "name": "DO Meter Digital",
+      "itemCode": "1.02.03.04.006",
+      "toolCode": "DO-M-02",
+    },
+    {
+      "name": "Turbidity Meter Portable",
+      "itemCode": "1.02.03.04.007",
+      "toolCode": "TB-M-03",
+    },
+    {
+      "name": "Water Sampler (Gayung)",
+      "itemCode": "1.02.03.04.010",
+      "toolCode": "WS-05",
+    },
+    {
+      "name": "Coolbox Standard",
+      "itemCode": "1.02.03.04.015",
+      "toolCode": "CB-10",
+    },
+  ];
+
+  final Map<String, String> _vehicleData = {
+    "name": "Toyota Hilux Double Cabin",
+    "plateNumber": "B 9876 XYZ",
+  };
+
   @override
   void dispose() {
     _namaContohUjiController.dispose();
@@ -51,6 +85,232 @@ class _DetailSamplingPageState extends State<DetailSamplingPage> {
         title: Text('$title Belum Tersedia'),
         description: const Text('Fitur ini masih dalam tahap pengembangan.'),
         alignment: Alignment.bottomCenter,
+      ),
+    );
+  }
+
+  // --- Logic Data Alat Dialog (View Only) ---
+  void _showDataAlatDialog() {
+    showShadDialog(
+      context: context,
+      builder: (context) {
+        return ShadDialog(
+          title: const Text("Daftar Alat Lapangan"),
+          description: const Text(
+            "Informasi peralatan yang tercatat untuk kegiatan sampling ini.",
+          ),
+          child: Container(
+            width: 375,
+            constraints: const BoxConstraints(maxHeight: 500),
+            child: ListView.separated(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              itemCount: _toolList.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              itemBuilder: (context, index) {
+                final tool = _toolList[index];
+                return Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade200),
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Nama Alat
+                      Row(
+                        children: [
+                          // Container(
+                          //   padding: const EdgeInsets.all(6),
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.blue.shade50,
+                          //     shape: BoxShape.circle,
+                          //   ),
+                          //   child: Icon(
+                          //     LucideIcons.wrench,
+                          //     size: 14,
+                          //     color: Colors.blue.shade700,
+                          //   ),
+                          // ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              tool['name']!,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      const Divider(height: 1, thickness: 0.5),
+                      const SizedBox(height: 12),
+                      // Kode Barang & Kode Alat
+                      Row(
+                        children: [
+                          _buildDetailItem(
+                            "Kode Barang",
+                            tool['itemCode']!,
+                            LucideIcons.barcode,
+                          ),
+                          const SizedBox(width: 16),
+                          _buildDetailItem(
+                            "Kode Alat",
+                            tool['toolCode']!,
+                            LucideIcons.tag,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            ShadButton.outline(
+              foregroundColor: Colors.red,
+              decoration: ShadDecoration(
+                border: ShadBorder.all(color: Colors.red, width: 1),
+              ),
+              child: const Text('Tutup'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // --- Logic Data Kendaraan Dialog (View Only - Single Item) ---
+  void _showDataKendaraanDialog() {
+    showShadDialog(
+      context: context,
+      builder: (context) {
+        return ShadDialog(
+          title: const Text("Data Kendaraan"),
+          description: const Text("Informasi kendaraan operasional lapangan."),
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.grey.shade200),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade50,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    LucideIcons.car,
+                    size: 24,
+                    color: Colors.orange.shade700,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _vehicleData['name']!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Text(
+                          _vehicleData['plateNumber']!,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey.shade700,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ShadButton.outline(
+              foregroundColor: Colors.red,
+              decoration: ShadDecoration(
+                border: ShadBorder.all(color: Colors.red, width: 1),
+              ),
+              child: const Text('Tutup'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailItem(String label, String value, IconData icon) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 10, color: Colors.grey.shade600),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+              ),
+            ],
+          ),
+          const SizedBox(height: 2),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -94,10 +354,10 @@ class _DetailSamplingPageState extends State<DetailSamplingPage> {
     });
   }
 
+  // --- Build Widget ---
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: _buildAppBar(theme),
@@ -477,7 +737,8 @@ class _DetailSamplingPageState extends State<DetailSamplingPage> {
       children: [
         Expanded(
           child: ShadButton.outline(
-            onPressed: () => _showTodoToast("Data Alat"),
+            // --- Open Dialog Data Alat ---
+            onPressed: () => _showDataAlatDialog(),
             foregroundColor: Colors.orange,
             decoration: ShadDecoration(
               border: ShadBorder.all(color: Colors.orange, width: 1),
@@ -495,7 +756,8 @@ class _DetailSamplingPageState extends State<DetailSamplingPage> {
         const SizedBox(width: 16),
         Expanded(
           child: ShadButton.outline(
-            onPressed: () => _showTodoToast("Data Kendaraan"),
+            // --- Open Dialog Data Kendaraan ---
+            onPressed: () => _showDataKendaraanDialog(),
             foregroundColor: Colors.blue,
             decoration: ShadDecoration(
               border: ShadBorder.all(color: Colors.blue, width: 1),
