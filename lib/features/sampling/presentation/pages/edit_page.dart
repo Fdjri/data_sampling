@@ -697,7 +697,7 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
         title: Column(
           children: [
             Text(
-              'EDIT DATA SAMPLING',
+              'DETAIL DATA SAMPLING',
               style: theme.textTheme.h4.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
