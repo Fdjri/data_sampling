@@ -11,49 +11,70 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController loginController = Get.put(LoginController());
 
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: const Color(0xFFD6E2EA),
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // 1. Header & Animation Layer
-          Positioned(
+          // 1. Header & Animation Layer (Animated Height)
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
             top: 0,
             left: 0,
             right: 0,
-            bottom:
-                MediaQuery.of(context).size.height * 0.48, // Top half for bear
+            height: size.height * (isKeyboardOpen ? 0.35 : 0.48),
             child: Column(
               children: [
-                const SizedBox(height: 60),
-                // Logo & Text
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
+                // Logo & Text (Hides when keyboard Open)
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: isKeyboardOpen ? 0 : 180,
+                  curve: Curves.easeOut,
+                  child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: FadeTransition(
+                      opacity: AlwaysStoppedAnimation(
+                        isKeyboardOpen ? 0.0 : 1.0,
                       ),
-                      child: const Icon(
-                        Icons.change_history,
-                        size: 32,
-                        color: Colors.black,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 60),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.change_history,
+                              size: 32,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            "Daspel",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Text(
+                            "Data Sampling Manager",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      "Daspel",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const Text(
-                      "Data Sampling Manager",
-                      style: TextStyle(fontSize: 14, color: Colors.black54),
-                    ),
-                  ],
+                  ),
                 ),
                 Expanded(
                   child: SizedBox(
@@ -72,17 +93,23 @@ class LoginPage extends StatelessWidget {
             ),
           ),
 
-          // 2. White Bottom Sheet Layer
-          Align(
-            alignment: Alignment.bottomCenter,
+          // 2. White Bottom Sheet Layer (Animated Top Position)
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+            top: size.height * (isKeyboardOpen ? 0.30 : 0.45),
+            left: 0,
+            right: 0,
+            bottom: 0,
             child: ClipPath(
               clipper: CurvedTopClipper(),
               child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.55,
                 color: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -165,6 +192,26 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 32),
+
+                      Center(
+                        child: RichText(
+                          text: const TextSpan(
+                            text: "Don't have account? ",
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: "Create now",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
