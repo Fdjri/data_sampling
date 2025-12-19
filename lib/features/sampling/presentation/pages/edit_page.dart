@@ -121,9 +121,7 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
-                            _showReplaceSourceDialog(
-                              index,
-                            ); 
+                            _showReplaceSourceDialog(index);
                           },
                           child: Container(
                             width: 80,
@@ -202,8 +200,8 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
                 width: double.infinity,
                 onPressed: () {
                   Navigator.pop(context);
-                  _removeCollage(); 
-                  _handleImageSelection(); 
+                  _removeCollage();
+                  _handleImageSelection();
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -222,7 +220,7 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
                 width: double.infinity,
                 onPressed: () {
                   Navigator.pop(context);
-                  _showCollageDetail(); 
+                  _showCollageDetail();
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -256,7 +254,7 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
               ShadButton.outline(
                 onPressed: () {
                   Navigator.pop(context);
-                  _pickMoreImageCamera(); 
+                  _pickMoreImageCamera();
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -271,7 +269,7 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
               ShadButton.outline(
                 onPressed: () {
                   Navigator.pop(context);
-                  _pickMoreImages(); 
+                  _pickMoreImages();
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -349,10 +347,8 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
 
       if (pickedFile != null) {
         setState(() {
-          _selectedRawImages[index] = File(
-            pickedFile.path,
-          ); 
-          _processCollage(); 
+          _selectedRawImages[index] = File(pickedFile.path);
+          _processCollage();
         });
       }
     } catch (e) {
@@ -362,9 +358,9 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
 
   void _removeImageAt(int index) {
     setState(() {
-      _selectedRawImages.removeAt(index); 
+      _selectedRawImages.removeAt(index);
       if (_selectedRawImages.isEmpty) {
-        _collageImage = null; 
+        _collageImage = null;
       } else {
         _processCollage();
       }
@@ -473,8 +469,8 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
             .map((e) => File(e.path))
             .toList();
         setState(() {
-          _selectedRawImages.addAll(newFiles); 
-          _processCollage(); 
+          _selectedRawImages.addAll(newFiles);
+          _processCollage();
         });
       }
     } catch (e) {
@@ -495,8 +491,8 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
 
       if (pickedFile != null) {
         setState(() {
-          _selectedRawImages.add(File(pickedFile.path)); 
-          _processCollage(); 
+          _selectedRawImages.add(File(pickedFile.path));
+          _processCollage();
         });
       }
     } catch (e) {
@@ -558,7 +554,7 @@ class _SamplingEditPageState extends State<SamplingEditPage> {
       var result = await FlutterImageCompress.compressAndGetFile(
         rawFile.absolute.path,
         targetPath,
-        quality: 75, // Atur Quality 
+        quality: 75, // Atur Quality
         minWidth: 1200, // Resize
         minHeight: 1200,
       );

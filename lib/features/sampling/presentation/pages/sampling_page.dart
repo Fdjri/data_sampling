@@ -12,24 +12,24 @@ class SamplingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F5),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF1E293B),
+        surfaceTintColor: const Color(0xFF1E293B),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(LucideIcons.chevronLeft, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: const Text(
           'SAMPLING',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          // Bagian Header (Search & Filter)
+          // Header (Search & Filter Cards)
           Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.white,
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+            ),
             child: Column(
               children: [
                 // Search Bar
@@ -45,36 +45,21 @@ class SamplingPage extends StatelessWidget {
                   placeholder: Text('Cari No. Contoh atau Nama Perusahaan...'),
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
 
-                // Filter & Sort Buttons
+                // Summary Cards (Today & All)
                 Row(
                   children: [
-                    Expanded(
-                      child: ShadButton.outline(
-                        onPressed: () {},
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('10 Entries'),
-                            Icon(LucideIcons.chevronDown, size: 16),
-                          ],
-                        ),
-                      ),
+                    _buildSummaryCard(
+                      label: 'Today',
+                      value: '10',
+                      color: const Color(0xFF3B4876),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ShadButton.outline(
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(LucideIcons.arrowDownWideNarrow, size: 16),
-                            const SizedBox(width: 8),
-                            const Text('Sort'),
-                          ],
-                        ),
-                      ),
+                    const SizedBox(width: 16),
+                    _buildSummaryCard(
+                      label: 'All',
+                      value: '120',
+                      color: const Color(0xFFE94E9F),
                     ),
                   ],
                 ),
@@ -105,6 +90,45 @@ class SamplingPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // --- Widget Card Summary Stat ---
+  Widget _buildSummaryCard({
+    required String label,
+    required String value,
+    required Color color,
+  }) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color, width: 2.5),
+        ),
+        child: Column(
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                color: color,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
